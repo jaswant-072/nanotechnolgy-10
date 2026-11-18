@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Practicum 10 - Nanotechnology in Healthcare & Energy (DOM)</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f4f8; color: #1e293b; padding: 1.5rem; }
+    .wrapper { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 1.25rem; }
+
+    header { background: linear-gradient(135deg, #0f172a, #0284c7); color: #fff; padding: 1.25rem; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .card { background: #fff; padding: 1.25rem; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); }
+    h2 { font-size: 1.15rem; margin-bottom: 0.75rem; color: #0284c7; }
+
+    /* Buttons */
+    .btn { background: #0284c7; color: #fff; border: none; padding: 0.55rem 1rem; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    .btn:hover { background: #0369a1; }
+    .btn-secondary { background: #475569; }
+
+    /* 1. Dropdown Menu */
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-menu { position: absolute; right: 0; top: 110%; background: #fff; border: 1px solid #cbd5e1; border-radius: 6px; min-width: 210px; box-shadow: 0 4px 10px rgba(0,0,0,0.15); z-index: 10; }
+    .dropdown-menu a { display: block; padding: 0.65rem 0.9rem; color: #1e293b; text-decoration: none; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; }
+    .dropdown-menu a:hover { background: #e0f2fe; }
+    .hidden { display: none; }
+
+    /* Dynamic Topic Highlight Box */
+    .topic-banner { background: #e0f2fe; border-left: 4px solid #0284c7; padding: 0.85rem 1rem; border-radius: 4px; font-size: 0.92rem; color: #0f172a; }
+
+    /* 2. Interactive Form */
+    .form-group { margin-bottom: 0.85rem; }
+    label { display: block; font-weight: bold; margin-bottom: 0.3rem; font-size: 0.9rem; }
+    input, select { width: 100%; padding: 0.55rem; border: 1px solid #cbd5e1; border-radius: 5px; }
+    .error-msg { color: #dc2626; font-size: 0.82rem; margin-top: 0.25rem; display: block; }
+    .status-msg { margin-top: 0.75rem; font-weight: bold; color: #16a34a; }
+
+    /* 3. Modal Dialog */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.65); display: flex; justify-content: center; align-items: center; z-index: 20; }
+    .modal-overlay.hidden { display: none; }
+    .modal-box { background: #fff; padding: 1.5rem; border-radius: 8px; max-width: 430px; width: 90%; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.25); }
+    .modal-box h3 { color: #0284c7; margin-bottom: 0.5rem; }
+    .modal-box p { margin: 0.6rem 0 1.25rem; font-size: 0.93rem; color: #475569; line-height: 1.5; }
+  </style>
+</head>
+<body>
+
+  <div class="wrapper">
+    <!-- Header with Interactive Dropdown Menu -->
+    <header>
+      <div>
+        <h1 style="font-size: 1.25rem;">Nanotechnology: Healthcare &amp; Energy</h1>
+        <small>Practicum No. 10 (DOM Elements) | JASWANT D (URK26CS1188)</small>
+      </div>
+
+      <!-- 1. Dropdown Menu Component -->
+      <div class="dropdown">
+        <button id="dropdown-btn" class="btn">Select Nano Domain &#9662;</button>
+        <div id="dropdown-menu" class="dropdown-menu hidden">
+          <a href="#" class="domain-option" data-info="Nanomedicine: Lipid nanoparticles deliver targeted chemotherapy directly to tumor cells with minimal side effects.">Targeted Drug Delivery</a>
+          <a href="#" class="domain-option" data-info="Nano-Solar: Quantum dot and perovskite nanocrystals capture a wider solar spectrum to boost energy efficiency.">Quantum Dot Solar Cells</a>
+          <a href="#" class="domain-option" data-info="Energy & Diagnostics: Graphene nanomaterials power fast-charging batteries and rapid disease biosensors.">Graphene Batteries &amp; Sensors</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Content Updated via Dropdown Selection -->
+    <div id="domain-display" class="topic-banner">
+      <strong>Selected Domain:</strong> Click "Select Nano Domain" above to dynamically update nanotechnology research details via the DOM.
+    </div>
+
+    <!-- 2. Interactive Form Component -->
+    <section class="card" id="form-section">
+      <h2>1. Nanotechnology Research Registration Form</h2>
+      <form id="nano-form" novalidate>
+        <div class="form-group">
+          <label for="researcherName">Researcher / Student Name</label>
+          <input type="text" id="researcherName" placeholder="Enter full name (min 3 characters)">
+          <span id="nameError" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="researcherEmail">Institutional Email</label>
+          <input type="email" id="researcherEmail" placeholder="name@karunya.edu.in">
+          <span id="emailError" class="error-msg"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="nanoTrack">Application Track</label>
+          <select id="nanoTrack">
+            <option value="Nanomedicine & Drug Delivery">Nanomedicine &amp; Drug Delivery (Healthcare)</option>
+            <option value="Quantum Dot Solar & Storage">Quantum Dot Solar &amp; Nanobatteries (Energy)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn">Register Proposal</button>
+        <div id="formStatus" class="status-msg"></div>
+      </form>
+    </section>
+
+    <!-- 3. Modal Trigger Section -->
+    <section class="card" id="modal-section">
+      <h2>2. Nanoscale Specifications Modal</h2>
+      <p style="margin-bottom: 0.85rem; font-size: 0.92rem;">Click below to open an interactive modal popup summarizing nanoscale (1–100 nm) engineering benchmarks.</p>
+      <button id="open-modal-btn" class="btn">View Nanoscale Benchmarks</button>
+    </section>
+  </div>
+
+  <!-- Modal Overlay (Hidden by default) -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal-box">
+      <h3>Nanotechnology Benchmarks (1–100 nm)</h3>
+      <p><strong>Healthcare:</strong> 50–100 nm liposomes improve targeted drug bioavailability.<br>
+         <strong>Energy:</strong> CdSe quantum dots &amp; graphene electrodes increase charge density and solar absorption.</p>
+      <button id="close-modal-btn" class="btn btn-secondary">Close Window</button>
+    </div>
+  </div>
+
+  <script>
+    // --- 1. DROPDOWN MENU & DYNAMIC TEXT UPDATE ---
+    const dropdownBtn = document.getElementById("dropdown-btn");
+    const dropdownMenu = document.getElementById("dropdown-menu");
+    const domainDisplay = document.getElementById("domain-display");
+
+    dropdownBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      dropdownMenu.classList.toggle("hidden");
+    });
+
+    document.querySelectorAll(".domain-option").forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        domainDisplay.textContent = item.getAttribute("data-info");
+        dropdownMenu.classList.add("hidden");
+      });
+    });
+
+    document.addEventListener("click", () => {
+      dropdownMenu.classList.add("hidden");
+    });
+
+    // --- 2. INTERACTIVE FORM VALIDATION ---
+    const form = document.getElementById("nano-form");
+    const nameInput = document.getElementById("researcherName");
+    const emailInput = document.getElementById("researcherEmail");
+    const trackSelect = document.getElementById("nanoTrack");
+    const nameError = document.getElementById("nameError");
+    const emailError = document.getElementById("emailError");
+    const formStatus = document.getElementById("formStatus");
+
+    nameInput.addEventListener("input", () => {
+      nameError.textContent = nameInput.value.trim().length < 3 ? "Name must be at least 3 characters." : "";
+    });
+
+    emailInput.addEventListener("input", () => {
+      emailError.textContent = !emailInput.value.includes("@") ? "Please enter a valid email address." : "";
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const validName = nameInput.value.trim().length >= 3;
+      const validEmail = emailInput.value.includes("@");
+
+      if (validName && validEmail) {
+        formStatus.textContent = `Registered ${nameInput.value.trim()} under "${trackSelect.value}"!`;
+        form.reset();
+      } else {
+        formStatus.textContent = "";
+        if (!validName) nameError.textContent = "Name is required (min 3 characters).";
+        if (!validEmail) emailError.textContent = "Valid email is required.";
+      }
+    });
+
+    // --- 3. MODAL DIALOG DOM MANIPULATION ---
+    const openModalBtn = document.getElementById("open-modal-btn");
+    const closeModalBtn = document.getElementById("close-modal-btn");
+    const modalOverlay = document.getElementById("modal-overlay");
+
+    openModalBtn.addEventListener("click", () => {
+      modalOverlay.classList.remove("hidden");
+    });
+
+    closeModalBtn.addEventListener("click", () => {
+      modalOverlay.classList.add("hidden");
+    });
+
+    modalOverlay.addEventListener("click", (e) => {
+      if (e.target === modalOverlay) {
+        modalOverlay.classList.add("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
